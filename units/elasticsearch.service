@@ -1,0 +1,31 @@
+[Unit]
+Description=es
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+Type=simple
+Restart=always
+RestartSec=60
+EnvironmentFile=/etc/environment
+
+
+ExecStartPre=-/usr/bin/docker kill es
+ExecStartPre=-/usr/bin/docker rm es
+ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
+ExecStartPre=-/usr/bin/bash -c "sudo mkdir /mnt/es"
+
+ExecStart=/bin/bash -c '\
+  /usr/bin/docker run --rm \
+    --name es \
+    --publish 80:9200 \
+    --publish 9300:9300 \
+    --volume /mnt/es:/data \
+    dockerfile/elasticsearch \
+    /elasticsearch/bin/elasticsearch \
+    --path.data=/data/data \
+    --path.logs=/data/logs \
+    --bootstrap.mlockall=true'
+
+ExecStop=/usr/bin/docker kill es
