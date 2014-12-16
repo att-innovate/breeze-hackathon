@@ -1,4 +1,4 @@
-[Unit] 
+[Unit]
 Description=es
 Requires=docker.service
 After=docker.service
@@ -13,7 +13,7 @@ EnvironmentFile=/etc/environment
 
 ExecStartPre=-/usr/bin/docker kill es
 ExecStartPre=-/usr/bin/docker rm es
-ExecStartPre=/usr/bin/docker pull dockerfile/elasticsearch
+ExecStartPre=/usr/bin/docker pull barnybug/elasticsearch:1.3.2
 ExecStartPre=-/usr/bin/bash -c "sudo mkdir /mnt/es"
 
 ExecStart=/bin/bash -c '\
@@ -22,7 +22,7 @@ ExecStart=/bin/bash -c '\
     --publish 80:9200 \
     --publish 9300:9300 \
     --volume /mnt/es:/data \
-    dockerfile/elasticsearch \
+    barnybug/elasticsearch:1.3.2 \
     /elasticsearch/bin/elasticsearch \
     --path.data=/data/data \
     --path.logs=/data/logs \

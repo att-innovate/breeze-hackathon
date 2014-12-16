@@ -1,0 +1,26 @@
+[Unit] 
+Description=mongodb
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+Type=simple
+Restart=always
+RestartSec=60
+EnvironmentFile=/etc/environment
+
+
+ExecStartPre=-/usr/bin/docker kill mongodb
+ExecStartPre=-/usr/bin/docker rm mongodb
+ExecStartPre=/usr/bin/docker pull dockerfile/mongodb
+ExecStartPre=-/usr/bin/bash -c "sudo mkdir /mnt/mongodb"
+
+ExecStart=/bin/bash -c '\
+  /usr/bin/docker run --rm \
+    --name mongodb \
+    --publish 80:27017 \
+    --volume /mnt/mongodb:/data/db \
+    dockerfile/mongodb'
+
+ExecStop=/usr/bin/docker kill mongodb
