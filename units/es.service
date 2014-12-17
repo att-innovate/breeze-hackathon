@@ -21,7 +21,7 @@ ExecStart=/bin/bash -c '\
     --name es \
     --publish 80:9200 \
     --publish 9300:9300 \
-    --volume /mnt/es:/data \
+    --volume /mnt/es:/elasticsearch-1.3.2/data \
     barnybug/elasticsearch:1.3.2'
 
 ExecStop=/usr/bin/docker kill es
