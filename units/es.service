@@ -27,5 +27,5 @@ ExecStart=/bin/bash -c '\
     --path.data=/data/data \
     --path.logs=/data/logs \
     --node.name=es'
-    
+
 ExecStop=/usr/bin/docker kill es
